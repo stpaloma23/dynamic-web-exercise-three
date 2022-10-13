@@ -18,7 +18,7 @@ function Home() {
         const cityToQuery = searchParams.get('city') || city;
         setCity(cityToQuery);
         axios
-            .get(`https://api.openweathermap.org/data/2.5/weather?q=${cityToQuery}&appid=${WEATHER_APP_API_KEY}`)
+            .get(`https://api.openweathermap.org/data/2.5/weather?q=${cityToQuery}&units=imperial&appid=${WEATHER_APP_API_KEY}`)
             .then( function (response) {
                 console.log(response)
                 setWeatherData(response.data);
@@ -33,7 +33,6 @@ function Home() {
         const weatherMain = weatherData.main || {};
         const weatherClouds = weatherData.clouds || {};
         return {
-            // city: weatherData.name,
             clouds: weatherClouds.all,
             currentTemp: Math.round(weatherMain.temp),
             highTemp: Math.round(weatherMain.temp_max),
@@ -44,18 +43,20 @@ function Home() {
         };
     }, [weatherData]);
     return (
-        <div>
-            <Header />
-            <WeatherCard 
-                clouds={clouds}
-                city={city} 
-                currentTemp={currentTemp}
-                highTemp={highTemp}
-                humidity={humidity} 
-                lowTemp={lowTemp}
-                weatherType={weatherType}
-                windSpeed={windSpeed}
-            />
+        <div style={{backgroundColor: `rgba(0,0,0, ${clouds/100})`}}>
+            <div className="weatherCard--wrapper">
+                <Header />
+                <WeatherCard 
+                    clouds={clouds}
+                    city={city} 
+                    currentTemp={currentTemp}
+                    highTemp={highTemp}
+                    humidity={humidity} 
+                    lowTemp={lowTemp}
+                    weatherType={weatherType}
+                    windSpeed={windSpeed}
+                />
+            </div>
         </div>
     );
 }
